@@ -28,9 +28,23 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files (keep .env.example for docs)
 .env*
+!.env.example
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# --- never push secrets / dumps / uploads ---
+/public/backup/
+
+# --- heavy portrait binaries (Garage / local only) ---
+# Keep JSON manifests under public/fallen/; ignore image files.
+/public/fallen/iranintl/
+/public/fallen/**/*.jpg
+/public/fallen/**/*.jpeg
+/public/fallen/**/*.png
+/public/fallen/**/*.webp
+/public/fallen/**/*.gif
+/public/fallen/**/*.avif
