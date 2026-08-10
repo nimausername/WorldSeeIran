@@ -3,9 +3,16 @@ import { notFound } from "next/navigation"
 import { Suspense } from "react"
 
 import { HomeIntro } from "@/components/home/home-intro"
-import { brandOpenGraphImage, brandTwitter } from "@/lib/branding"
-import { isLocale, locales, type Locale } from "@/lib/i18n/config"
+import { JsonLd } from "@/components/seo/json-ld"
+import {
+  brandOpenGraphImage,
+  brandRobots,
+  brandTwitter,
+} from "@/lib/branding"
+import { isLocale, locales } from "@/lib/i18n/config"
 import { getDictionary } from "@/lib/i18n/dictionaries"
+import { buildHomePageSchema } from "@/lib/seo/structured-data"
+import { languageAlternates, localeUrl, siteName } from "@/lib/site"
 
 type HomePageProps = PageProps<"/[lang]">
 
@@ -28,22 +35,24 @@ export const generateMetadata = async ({
   }
 
   const dict = getDictionary(lang)
+  const pageUrl = localeUrl(lang)
 
   return {
-    title: dict.meta.title,
+    title: {
+      absolute: dict.meta.title,
+    },
     description: dict.meta.description,
+    robots: brandRobots,
     alternates: {
-      canonical: `https://worldseeiran.org/${lang}`,
-      languages: Object.fromEntries(
-        locales.map((locale) => [locale, `https://worldseeiran.org/${locale}`])
-      ) as Record<Locale, string>,
+      canonical: pageUrl,
+      languages: languageAlternates(),
     },
     openGraph: {
       ...brandOpenGraphImage,
       title: dict.meta.title,
       description: dict.meta.description,
-      url: `https://worldseeiran.org/${lang}`,
-      siteName: "WorldSeeIran",
+      url: pageUrl,
+      siteName,
       locale: lang === "fa" ? "fa_IR" : lang === "de" ? "de_DE" : "en_US",
       type: "website",
     },
@@ -68,8 +77,14 @@ export default async function HomePage({ params }: HomePageProps) {
   const dict = getDictionary(lang)
 
   return (
-    <Suspense fallback={null}>
-      <HomeIntro dict={dict} />
-    </Suspense>
+    <>
+      <JsonLd
+        id="home-structured-data"
+        data={buildHomePageSchema(lang, dict.meta.description)}
+      />
+      <Suspense fallback={null}>
+        <HomeIntro dict={dict} />
+      </Suspense>
+    </>
   )
 }

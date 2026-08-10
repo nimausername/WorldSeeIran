@@ -1,8 +1,17 @@
 import type { Metadata, Viewport } from "next"
 import { Geist, Geist_Mono, Vazirmatn } from "next/font/google"
 
+import { JsonLd } from "@/components/seo/json-ld"
 import { ThemeProvider } from "@/components/theme-provider"
-import { brandOpenGraphImage, brandTwitter } from "@/lib/branding"
+import {
+  brandOpenGraphImage,
+  brandOpenGraphSite,
+  brandRobots,
+  brandTwitter,
+  brandVerification,
+} from "@/lib/branding"
+import { buildSiteGraph } from "@/lib/seo/structured-data"
+import { siteName, siteUrl } from "@/lib/site"
 import { cn } from "@/lib/utils"
 
 import "./globals.css"
@@ -23,16 +32,46 @@ const vazirmatn = Vazirmatn({
 })
 
 export const metadata: Metadata = {
-  title: "WorldSeeIran",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: siteName,
+    template: `%s · ${siteName}`,
+  },
   description:
     "A memorial for those killed by the Islamic Republic of Iran during the latest uprising.",
-  metadataBase: new URL("https://worldseeiran.org"),
+  applicationName: siteName,
+  authors: [{ name: siteName, url: siteUrl }],
+  creator: siteName,
+  publisher: siteName,
+  category: "memorial",
+  keywords: [
+    "WorldSeeIran",
+    "Iran",
+    "memorial",
+    "uprising",
+    "Islamic Republic",
+    "javidnam",
+    "protests",
+    "human rights",
+  ],
+  robots: brandRobots,
+  ...(Object.keys(brandVerification).length > 0
+    ? { verification: brandVerification }
+    : {}),
+  alternates: {
+    canonical: siteUrl,
+  },
   openGraph: {
     ...brandOpenGraphImage,
-    siteName: "WorldSeeIran",
+    ...brandOpenGraphSite,
     type: "website",
   },
   twitter: brandTwitter,
+  formatDetection: {
+    telephone: false,
+    email: false,
+    address: false,
+  },
 }
 
 export const viewport: Viewport = {
@@ -66,6 +105,7 @@ export default function RootLayout({
       )}
     >
       <body>
+        <JsonLd id="site-structured-data" data={buildSiteGraph()} />
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

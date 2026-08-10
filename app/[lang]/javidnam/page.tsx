@@ -2,15 +2,22 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
 import { JavidnamFieldLoader } from "@/components/fallen/javidnam-field-loader"
-import { brandOpenGraphImage, brandTwitter } from "@/lib/branding"
+import { JsonLd } from "@/components/seo/json-ld"
+import {
+  brandOpenGraphImage,
+  brandRobots,
+  brandTwitter,
+} from "@/lib/branding"
 import { FALLEN_PEOPLE_META } from "@/lib/fallen/people"
-import { isLocale, locales, type Locale } from "@/lib/i18n/config"
+import { isLocale, locales } from "@/lib/i18n/config"
 import { getDictionary } from "@/lib/i18n/dictionaries"
 import {
   formatLocaleDate,
   formatLocaleNumber,
   formatTemplate,
 } from "@/lib/i18n/format"
+import { buildJavidnamPageSchema } from "@/lib/seo/structured-data"
+import { languageAlternates, localeUrl, siteName } from "@/lib/site"
 
 type JavidnamPageProps = {
   readonly params: Promise<{
@@ -37,25 +44,24 @@ export const generateMetadata = async ({
   }
 
   const dict = getDictionary(lang)
+  const pageUrl = localeUrl(lang, "javidnam")
 
   return {
-    title: dict.javidnam.meta.title,
+    title: {
+      absolute: dict.javidnam.meta.title,
+    },
     description: dict.javidnam.meta.description,
+    robots: brandRobots,
     alternates: {
-      canonical: `https://worldseeiran.org/${lang}/javidnam`,
-      languages: Object.fromEntries(
-        locales.map((locale) => [
-          locale,
-          `https://worldseeiran.org/${locale}/javidnam`,
-        ])
-      ) as Record<Locale, string>,
+      canonical: pageUrl,
+      languages: languageAlternates("javidnam"),
     },
     openGraph: {
       ...brandOpenGraphImage,
       title: dict.javidnam.meta.title,
       description: dict.javidnam.meta.description,
-      url: `https://worldseeiran.org/${lang}/javidnam`,
-      siteName: "WorldSeeIran",
+      url: pageUrl,
+      siteName,
       locale: lang === "fa" ? "fa_IR" : lang === "de" ? "de_DE" : "en_US",
       type: "website",
     },
@@ -87,12 +93,22 @@ export default async function JavidnamPage({ params }: JavidnamPageProps) {
   })
 
   return (
-    <JavidnamFieldLoader
-      label={dict.javidnam.title}
-      lead={dict.javidnam.lead}
-      peopleCountLabel={peopleCountLabel}
-      lastUpdatedLabel={lastUpdatedLabel}
-      detailCopy={dict.javidnam.detail}
-    />
+    <>
+      <JsonLd
+        id="javidnam-structured-data"
+        data={buildJavidnamPageSchema(
+          lang,
+          dict.javidnam.meta.title,
+          dict.javidnam.meta.description
+        )}
+      />
+      <JavidnamFieldLoader
+        label={dict.javidnam.title}
+        lead={dict.javidnam.lead}
+        peopleCountLabel={peopleCountLabel}
+        lastUpdatedLabel={lastUpdatedLabel}
+        detailCopy={dict.javidnam.detail}
+      />
+    </>
   )
 }
