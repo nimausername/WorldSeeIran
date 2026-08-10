@@ -7,6 +7,8 @@ import type { JavidnamDetailCopy } from "@/components/fallen/javidnam-detail"
 type JavidnamFieldLoaderProps = {
   readonly label: string
   readonly lead: string
+  readonly peopleCountLabel: string
+  readonly lastUpdatedLabel: string
   readonly detailCopy: JavidnamDetailCopy
 }
 
@@ -19,7 +21,7 @@ const JavidnamField = dynamic(
     ssr: false,
     loading: () => (
       <div
-        className="h-full w-full bg-black"
+        className="h-full w-full bg-background"
         aria-busy="true"
         aria-live="polite"
       />

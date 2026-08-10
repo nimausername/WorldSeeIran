@@ -48,7 +48,10 @@ export type HomeDictionary = {
     readonly home: string
     readonly language: string
     readonly javidnam: string
+    readonly themeToLight: string
+    readonly themeToDark: string
   }
+  readonly credit: string
   readonly javidnam: {
     readonly meta: {
       readonly title: string
@@ -56,6 +59,12 @@ export type HomeDictionary = {
     }
     readonly title: string
     readonly lead: string
+    readonly stats: {
+      /** Template with `{count}` for the memorial headcount. */
+      readonly peopleCount: string
+      /** Template with `{date}` for the last data refresh. */
+      readonly lastUpdated: string
+    }
     readonly detail: {
       readonly close: string
       readonly age: string
@@ -124,7 +133,10 @@ const en: HomeDictionary = {
     home: "Home",
     language: "Language",
     javidnam: "Javidnam",
+    themeToLight: "Switch to light mode",
+    themeToDark: "Switch to dark mode",
   },
+  credit: "by Nima Khabbazi",
   javidnam: {
     meta: {
       title: "WorldSeeIran — Javidnam",
@@ -133,6 +145,10 @@ const en: HomeDictionary = {
     },
     title: "Javidnam",
     lead: "Move through the field. Every face is a life that must not disappear.",
+    stats: {
+      peopleCount: "{count} people remembered",
+      lastUpdated: "Last updated {date}",
+    },
     detail: {
       close: "Close",
       age: "Age",
@@ -201,7 +217,10 @@ const de: HomeDictionary = {
     home: "Startseite",
     language: "Sprache",
     javidnam: "Javidnam",
+    themeToLight: "Zum Hellmodus wechseln",
+    themeToDark: "Zum Dunkelmodus wechseln",
   },
+  credit: "von Nima Khabbazi",
   javidnam: {
     meta: {
       title: "WorldSeeIran — Javidnam",
@@ -210,6 +229,10 @@ const de: HomeDictionary = {
     },
     title: "Javidnam",
     lead: "Beweg dich durch das Feld. Jedes Gesicht ist ein Leben, das nicht verschwinden darf.",
+    stats: {
+      peopleCount: "{count} Menschen im Gedenken",
+      lastUpdated: "Zuletzt aktualisiert {date}",
+    },
     detail: {
       close: "Schließen",
       age: "Alter",
@@ -274,7 +297,10 @@ const fa: HomeDictionary = {
     home: "خانه",
     language: "زبان",
     javidnam: "جاویدنام",
+    themeToLight: "حالت روشن",
+    themeToDark: "حالت تاریک",
   },
+  credit: "اثر نیما خبازی",
   javidnam: {
     meta: {
       title: "WorldSeeIran — جاویدنام",
@@ -283,6 +309,10 @@ const fa: HomeDictionary = {
     },
     title: "جاویدنام",
     lead: "در میدان حرکت کنید. هر چهره، جانی است که نباید محو شود.",
+    stats: {
+      peopleCount: "{count} نفر در یادبود",
+      lastUpdated: "آخرین به‌روزرسانی {date}",
+    },
     detail: {
       close: "بستن",
       age: "سن",

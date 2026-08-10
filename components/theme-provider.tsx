@@ -1,7 +1,12 @@
 "use client"
 
 import * as React from "react"
-import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes"
+import { ThemeProvider as NextThemesProvider } from "next-themes"
+
+import {
+  THEME_TOGGLE_CIRCLE,
+  useThemeToggle,
+} from "@/components/motion/theme-toggle"
 
 function ThemeProvider({
   children,
@@ -34,12 +39,15 @@ function isTypingTarget(target: EventTarget | null) {
   )
 }
 
+/**
+ * D toggles light/dark with the same circle view-transition as the dock control.
+ */
 function ThemeHotkey() {
-  const { resolvedTheme, setTheme } = useTheme()
+  const { toggle, mounted } = useThemeToggle(THEME_TOGGLE_CIRCLE)
 
   React.useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (event.defaultPrevented || event.repeat) {
+      if (event.defaultPrevented || event.repeat || !mounted) {
         return
       }
 
@@ -55,7 +63,8 @@ function ThemeHotkey() {
         return
       }
 
-      setTheme(resolvedTheme === "dark" ? "light" : "dark")
+      event.preventDefault()
+      toggle()
     }
 
     window.addEventListener("keydown", onKeyDown)
@@ -63,7 +72,7 @@ function ThemeHotkey() {
     return () => {
       window.removeEventListener("keydown", onKeyDown)
     }
-  }, [resolvedTheme, setTheme])
+  }, [mounted, toggle])
 
   return null
 }

@@ -134,3 +134,24 @@
     @apply font-sans;
   }
 }
+
+@layer utilities {
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scroll-fade {
+    mask-image: linear-gradient(
+      to bottom,
+      transparent,
+      black 0.75rem,
+      black calc(100% - 1.5rem),
+      transparent
+    );
+  }
+}

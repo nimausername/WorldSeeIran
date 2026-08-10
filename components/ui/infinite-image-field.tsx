@@ -297,15 +297,116 @@ const drawRoundedRect = (
   ctx.closePath()
 }
 
+type UniqueImageGrid = {
+  readonly cols: number
+  readonly rows: number
+  /** Column of the first image cell (grid centered on the origin). */
+  readonly originCol: number
+  /** Row of the first image cell (grid centered on the origin). */
+  readonly originRow: number
+  readonly count: number
+}
+
 /**
- * Deterministic image index for a grid cell.
+ * Builds a roughly square layout where each image occupies exactly one cell.
  */
-const cellImageIndex = (col: number, row: number, count: number): number => {
+const getUniqueImageGrid = (count: number): UniqueImageGrid => {
   if (count <= 0) {
-    return 0
+    return { cols: 0, rows: 0, originCol: 0, originRow: 0, count: 0 }
   }
-  const value = Math.abs(col * 73856093 + row * 19349663 + col * row * 83492791)
-  return value % count
+
+  const cols = Math.ceil(Math.sqrt(count))
+  const rows = Math.ceil(count / cols)
+
+  return {
+    cols,
+    rows,
+    originCol: -Math.floor(cols / 2),
+    originRow: -Math.floor(rows / 2),
+    count,
+  }
+}
+
+/**
+ * Unique image index for a grid cell, or null when the cell is empty.
+ * Unlike a modulo hash, each source is assigned to at most one cell.
+ */
+const cellImageIndex = (
+  col: number,
+  row: number,
+  grid: UniqueImageGrid
+): number | null => {
+  if (grid.count <= 0) {
+    return null
+  }
+
+  const localCol = col - grid.originCol
+  const localRow = row - grid.originRow
+
+  if (
+    localCol < 0 ||
+    localRow < 0 ||
+    localCol >= grid.cols ||
+    localRow >= grid.rows
+  ) {
+    return null
+  }
+
+  const index = localRow * grid.cols + localCol
+  if (index < 0 || index >= grid.count) {
+    return null
+  }
+
+  return index
+}
+
+/**
+ * Canvas colors follow the active light/dark theme tokens.
+ */
+const readFieldPalette = () => {
+  const root = document.documentElement
+  const background =
+    getComputedStyle(root).getPropertyValue("--background").trim() ||
+    "oklch(0.145 0 0)"
+  const isDark = root.classList.contains("dark")
+
+  return {
+    background,
+    placeholder: isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)",
+    stroke: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)",
+  }
+}
+
+/**
+ * Keeps the camera over the unique portrait field so idle drift cannot
+ * leave only empty space.
+ */
+const clampCameraToGrid = (args: {
+  readonly camX: number
+  readonly camY: number
+  readonly cellW: number
+  readonly cellH: number
+  readonly viewW: number
+  readonly viewH: number
+  readonly grid: UniqueImageGrid
+}): { readonly x: number; readonly y: number } => {
+  const { camX, camY, cellW, cellH, viewW, viewH, grid } = args
+
+  if (grid.count <= 0) {
+    return { x: camX, y: camY }
+  }
+
+  const minX = grid.originCol * cellW
+  const maxX = (grid.originCol + grid.cols - 1) * cellW
+  const minY = grid.originRow * cellH
+  const maxY = (grid.originRow + grid.rows - 1) * cellH
+  const padX = Math.min(viewW * 0.35, cellW * 2)
+  const padY = Math.min(viewH * 0.35, cellH * 2)
+
+  return {
+    x: Math.min(maxX + padX, Math.max(minX - padX, camX)),
+    y: Math.min(maxY + padY, Math.max(minY - padY, camY)),
+  }
 }
 
 /**
@@ -321,7 +422,7 @@ const hitTestImage = (args: {
   readonly imageWidth: number
   readonly imageHeight: number
   readonly gap: number
-  readonly count: number
+  readonly grid: UniqueImageGrid
 }): { readonly col: number; readonly row: number; readonly index: number } | null => {
   const {
     x,
@@ -333,10 +434,10 @@ const hitTestImage = (args: {
     imageWidth,
     imageHeight,
     gap,
-    count,
+    grid,
   } = args
 
-  if (count <= 0) {
+  if (grid.count <= 0) {
     return null
   }
 
@@ -353,16 +454,22 @@ const hitTestImage = (args: {
     return null
   }
 
+  const index = cellImageIndex(col, row, grid)
+  if (index === null) {
+    return null
+  }
+
   return {
     col,
     row,
-    index: cellImageIndex(col, row, count),
+    index,
   }
 }
 
 /**
- * Infinite canvas portrait field with an LRU decode pool so thousands of
- * sources stay scrollable without loading everything into memory.
+ * Panoramic portrait field with an LRU decode pool so thousands of
+ * unique sources stay scrollable without loading everything into memory.
+ * Each image is assigned to exactly one grid cell (no tiling repeats).
  */
 export const InfiniteImageField = ({
   className,
@@ -390,7 +497,11 @@ export const InfiniteImageField = ({
     y: number
     canvasX: number
     canvasY: number
+    pointerId: number
+    pointerType: string
+    moved: boolean
   } | null>(null)
+  const lastDragRef = useRef<{ x: number; y: number } | null>(null)
   const rafRef = useRef(0)
   const resumeLoopRef = useRef<() => void>(() => {})
   const imagesRef = useRef(images)
@@ -505,14 +616,82 @@ export const InfiniteImageField = ({
       }
     }
 
+    const isCoarsePointer = (pointerType: string) =>
+      pointerType === "touch" || pointerType === "pen"
+
+    const clickSlopSq = (pointerType: string) => {
+      const slop = isCoarsePointer(pointerType) ? 16 : 8
+      return slop * slop
+    }
+
+    const releasePointer = (event: PointerEvent) => {
+      if (canvas.hasPointerCapture(event.pointerId)) {
+        canvas.releasePointerCapture(event.pointerId)
+      }
+    }
+
     const onPointerMove = (event: PointerEvent) => {
       if (pausedRef.current) {
         return
       }
+
+      const down = pointerDownRef.current
       const point = toCanvasPoint(event)
+
+      if (down && isCoarsePointer(down.pointerType)) {
+        const dx = event.clientX - down.x
+        const dy = event.clientY - down.y
+        if (dx * dx + dy * dy > clickSlopSq(down.pointerType)) {
+          down.moved = true
+        }
+
+        if (down.moved) {
+          const last = lastDragRef.current
+          const frameDx = last ? event.clientX - last.x : 0
+          const frameDy = last ? event.clientY - last.y : 0
+          lastDragRef.current = { x: event.clientX, y: event.clientY }
+
+          const settings = settingsRef.current
+          const sources = imagesRef.current
+          const { w: width, h: height } = dimsRef.current
+          const cellW = settings.imageWidth + settings.gap
+          const cellH = settings.imageHeight + settings.gap
+
+          // Direct drag-to-pan; velocity holds last frame delta for a short coast.
+          camRef.current.x -= frameDx
+          camRef.current.y -= frameDy
+          velRef.current = {
+            x: Math.max(
+              -settings.maxSpeed,
+              Math.min(settings.maxSpeed, -frameDx * 0.55)
+            ),
+            y: Math.max(
+              -settings.maxSpeed,
+              Math.min(settings.maxSpeed, -frameDy * 0.55)
+            ),
+          }
+
+          const clamped = clampCameraToGrid({
+            camX: camRef.current.x,
+            camY: camRef.current.y,
+            cellW,
+            cellH,
+            viewW: width,
+            viewH: height,
+            grid: getUniqueImageGrid(sources.length),
+          })
+          camRef.current.x = clamped.x
+          camRef.current.y = clamped.y
+          schedule()
+        }
+        return
+      }
+
       if (!point) {
         return
       }
+
+      // Mouse / fine pointer: steer from position relative to center.
       pointerRef.current = {
         x: point.normX,
         y: point.normY,
@@ -522,12 +701,17 @@ export const InfiniteImageField = ({
     }
 
     const onPointerEnter = (event: PointerEvent) => {
+      if (isCoarsePointer(event.pointerType)) {
+        return
+      }
       onPointerMove(event)
     }
 
-    const onPointerLeave = () => {
+    const onPointerLeave = (event: PointerEvent) => {
+      if (pointerDownRef.current?.pointerId === event.pointerId) {
+        return
+      }
       pointerRef.current = { ...pointerRef.current, active: false }
-      pointerDownRef.current = null
     }
 
     const onPointerDown = (event: PointerEvent) => {
@@ -543,8 +727,19 @@ export const InfiniteImageField = ({
         y: event.clientY,
         canvasX: point.canvasX,
         canvasY: point.canvasY,
+        pointerId: event.pointerId,
+        pointerType: event.pointerType,
+        moved: false,
       }
-      if (!pausedRef.current) {
+      lastDragRef.current = { x: event.clientX, y: event.clientY }
+
+      try {
+        canvas.setPointerCapture(event.pointerId)
+      } catch {
+        // Some environments reject capture; click detection still works.
+      }
+
+      if (!pausedRef.current && !isCoarsePointer(event.pointerType)) {
         pointerRef.current = {
           x: point.normX,
           y: point.normY,
@@ -554,16 +749,27 @@ export const InfiniteImageField = ({
       }
     }
 
-    const onPointerUp = (event: PointerEvent) => {
+    const finishPointer = (event: PointerEvent) => {
       const down = pointerDownRef.current
+      if (!down || down.pointerId !== event.pointerId) {
+        return
+      }
+
+      releasePointer(event)
       pointerDownRef.current = null
-      if (!down || event.button !== 0) {
+      lastDragRef.current = null
+
+      if (isCoarsePointer(down.pointerType)) {
+        pointerRef.current = { ...pointerRef.current, active: false }
+      }
+
+      if (event.type === "pointercancel" || event.button !== 0) {
         return
       }
 
       const dx = event.clientX - down.x
       const dy = event.clientY - down.y
-      if (dx * dx + dy * dy > 36) {
+      if (down.moved || dx * dx + dy * dy > clickSlopSq(down.pointerType)) {
         return
       }
 
@@ -580,7 +786,7 @@ export const InfiniteImageField = ({
         imageWidth: settings.imageWidth,
         imageHeight: settings.imageHeight,
         gap: settings.gap,
-        count: sources.length,
+        grid: getUniqueImageGrid(sources.length),
       })
 
       if (!hit) {
@@ -593,6 +799,14 @@ export const InfiniteImageField = ({
       }
 
       onImageClickRef.current?.({ index: hit.index, src })
+    }
+
+    const onPointerUp = (event: PointerEvent) => {
+      finishPointer(event)
+    }
+
+    const onPointerCancel = (event: PointerEvent) => {
+      finishPointer(event)
     }
 
     const onVisibility = () => {
@@ -623,6 +837,7 @@ export const InfiniteImageField = ({
       const settings = settingsRef.current
       const sources = imagesRef.current
       const count = sources.length
+      const grid = getUniqueImageGrid(count)
       const dpr = Math.min(window.devicePixelRatio || 1, 2)
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
 
@@ -634,18 +849,51 @@ export const InfiniteImageField = ({
       if (!isPaused) {
         let targetX = 0
         let targetY = 0
-        if (pointerRef.current.active) {
-          targetX = (pointerRef.current.x - 0.5) * 2 * settings.maxSpeed
-          targetY = (pointerRef.current.y - 0.5) * 2 * settings.maxSpeed
+        const touchDragging =
+          pointerDownRef.current?.moved === true &&
+          isCoarsePointer(pointerDownRef.current.pointerType)
+
+        if (touchDragging) {
+          // Camera is updated directly in the pointer handler while dragging.
+          targetX = velRef.current.x
+          targetY = velRef.current.y
+        } else if (pointerRef.current.active) {
+          // Dead zone near center so resting a pointer doesn't race the field.
+          const offsetX = (pointerRef.current.x - 0.5) * 2
+          const offsetY = (pointerRef.current.y - 0.5) * 2
+          const deadZone = 0.18
+          const scaleOutsideDeadZone = (value: number) => {
+            if (Math.abs(value) <= deadZone) {
+              return 0
+            }
+            const sign = value < 0 ? -1 : 1
+            return sign * ((Math.abs(value) - deadZone) / (1 - deadZone))
+          }
+          targetX = scaleOutsideDeadZone(offsetX) * settings.maxSpeed
+          targetY = scaleOutsideDeadZone(offsetY) * settings.maxSpeed
         } else if (!reduceMotion.matches && settings.idleSpeed > 0) {
           targetX = Math.cos(elapsed * 0.00021) * settings.idleSpeed
           targetY = Math.sin(elapsed * 0.00017) * settings.idleSpeed * 0.85
         }
 
-        velRef.current.x += (targetX - velRef.current.x) * settings.smoothing
-        velRef.current.y += (targetY - velRef.current.y) * settings.smoothing
-        camRef.current.x += velRef.current.x
-        camRef.current.y += velRef.current.y
+        if (!touchDragging) {
+          velRef.current.x += (targetX - velRef.current.x) * settings.smoothing
+          velRef.current.y += (targetY - velRef.current.y) * settings.smoothing
+          camRef.current.x += velRef.current.x
+          camRef.current.y += velRef.current.y
+        }
+
+        const clamped = clampCameraToGrid({
+          camX: camRef.current.x,
+          camY: camRef.current.y,
+          cellW,
+          cellH,
+          viewW: width,
+          viewH: height,
+          grid,
+        })
+        camRef.current.x = clamped.x
+        camRef.current.y = clamped.y
       } else {
         velRef.current.x = 0
         velRef.current.y = 0
@@ -653,8 +901,9 @@ export const InfiniteImageField = ({
 
       const camX = camRef.current.x
       const camY = camRef.current.y
+      const palette = readFieldPalette()
 
-      ctx.fillStyle = "oklch(0.145 0 0)"
+      ctx.fillStyle = palette.background
       ctx.fillRect(0, 0, width, height)
 
       if (count === 0) {
@@ -673,7 +922,11 @@ export const InfiniteImageField = ({
       const seen = new Set<string>()
       for (let row = rowMin; row <= rowMax; row += 1) {
         for (let col = colMin; col <= colMax; col += 1) {
-          const src = sources[cellImageIndex(col, row, count)]
+          const index = cellImageIndex(col, row, grid)
+          if (index === null) {
+            continue
+          }
+          const src = sources[index]
           if (!src || seen.has(src)) {
             continue
           }
@@ -685,9 +938,14 @@ export const InfiniteImageField = ({
 
       for (let row = rowMin; row <= rowMax; row += 1) {
         for (let col = colMin; col <= colMax; col += 1) {
+          const index = cellImageIndex(col, row, grid)
+          if (index === null) {
+            continue
+          }
+
           const sx = col * cellW - camX + width / 2 - settings.imageWidth / 2
           const sy = row * cellH - camY + height / 2 - settings.imageHeight / 2
-          const src = sources[cellImageIndex(col, row, count)]
+          const src = sources[index]
           const image = src ? pool.peek(src) : null
 
           ctx.save()
@@ -710,7 +968,7 @@ export const InfiniteImageField = ({
               settings.imageHeight
             )
           } else {
-            ctx.fillStyle = "rgba(255,255,255,0.06)"
+            ctx.fillStyle = palette.placeholder
             ctx.fillRect(sx, sy, settings.imageWidth, settings.imageHeight)
           }
           ctx.restore()
@@ -724,7 +982,7 @@ export const InfiniteImageField = ({
             settings.imageHeight,
             settings.borderRadius
           )
-          ctx.strokeStyle = "rgba(255,255,255,0.08)"
+          ctx.strokeStyle = palette.stroke
           ctx.lineWidth = 1
           ctx.stroke()
           ctx.restore()
@@ -747,11 +1005,20 @@ export const InfiniteImageField = ({
     const observer = new ResizeObserver(resize)
     observer.observe(canvas)
 
+    const themeObserver = new MutationObserver(() => {
+      schedule()
+    })
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    })
+
     canvas.addEventListener("pointermove", onPointerMove)
     canvas.addEventListener("pointerenter", onPointerEnter)
     canvas.addEventListener("pointerleave", onPointerLeave)
     canvas.addEventListener("pointerdown", onPointerDown)
     canvas.addEventListener("pointerup", onPointerUp)
+    canvas.addEventListener("pointercancel", onPointerCancel)
     document.addEventListener("visibilitychange", onVisibility)
 
     schedule()
@@ -759,11 +1026,13 @@ export const InfiniteImageField = ({
     return () => {
       cancelAnimationFrame(rafRef.current)
       observer.disconnect()
+      themeObserver.disconnect()
       canvas.removeEventListener("pointermove", onPointerMove)
       canvas.removeEventListener("pointerenter", onPointerEnter)
       canvas.removeEventListener("pointerleave", onPointerLeave)
       canvas.removeEventListener("pointerdown", onPointerDown)
       canvas.removeEventListener("pointerup", onPointerUp)
+      canvas.removeEventListener("pointercancel", onPointerCancel)
       document.removeEventListener("visibilitychange", onVisibility)
       pool.dispose()
     }

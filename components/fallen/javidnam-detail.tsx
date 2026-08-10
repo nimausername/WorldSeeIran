@@ -54,7 +54,7 @@ export const JavidnamDetail = ({
       {person ? (
         <DialogContent
           showCloseButton
-          className="max-h-[min(92dvh,880px)] overflow-hidden p-0 sm:max-w-3xl"
+          className="max-h-[min(92dvh,880px)] overflow-y-auto overscroll-contain p-0 sm:max-w-3xl"
           dir="rtl"
           lang="fa"
         >
@@ -67,7 +67,7 @@ export const JavidnamDetail = ({
 
           <Card className="border-0 bg-transparent ring-0 [--card-spacing:--spacing(0)]">
             <div className="flex flex-col sm:flex-row">
-              <div className="relative aspect-[4/5] w-full shrink-0 bg-muted sm:aspect-auto sm:min-h-[28rem] sm:w-[46%]">
+              <div className="relative aspect-[4/5] max-h-[42dvh] w-full shrink-0 overflow-hidden bg-muted sm:aspect-auto sm:max-h-none sm:min-h-[28rem] sm:w-[46%]">
                 {/* eslint-disable-next-line @next/next/no-img-element -- memorial portrait asset */}
                 <img
                   src={person.image}
@@ -79,7 +79,7 @@ export const JavidnamDetail = ({
               </div>
 
               <div className="flex min-w-0 flex-1 flex-col">
-                <CardHeader className="gap-3 p-5 pe-12 sm:p-6 sm:pe-14">
+                <CardHeader className="gap-3 p-5 pe-14 sm:p-6 sm:pe-14">
                   <CardTitle className="text-2xl font-semibold tracking-tight [font-family:var(--font-fa)] sm:text-3xl">
                     {person.name}
                   </CardTitle>
@@ -87,7 +87,7 @@ export const JavidnamDetail = ({
 
                 <Separator />
 
-                <CardContent className="grid gap-4 p-5 sm:p-6">
+                <CardContent className="grid gap-4 p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:p-6">
                   <DetailRow label={copy.age} value={ageLabel} />
                   <DetailRow label={copy.place} value={placeLabel} />
                   <DetailRow label={copy.date} value={dateLabel} />

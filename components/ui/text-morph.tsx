@@ -93,8 +93,17 @@ export function TextMorph({
     const measure = measureRef.current;
     if (!stage || !measure) return;
 
+    const host = stage.parentElement;
+    const availableWidth = host?.clientWidth || stage.clientWidth || Infinity;
+
     let maxWidth = 0;
     let maxHeight = 0;
+
+    measure.style.width = "max-content";
+    measure.style.maxWidth = Number.isFinite(availableWidth)
+      ? `${availableWidth}px`
+      : "none";
+    measure.style.whiteSpace = "normal";
 
     for (const word of values) {
       measure.textContent = word;
@@ -102,9 +111,13 @@ export function TextMorph({
       maxHeight = Math.max(maxHeight, measure.offsetHeight);
     }
 
+    const nextWidth = Number.isFinite(availableWidth)
+      ? Math.min(maxWidth, availableWidth)
+      : maxWidth;
+
     const previousTransition = stage.style.transition;
     stage.style.transition = "none";
-    stage.style.width = `${maxWidth}px`;
+    stage.style.width = `${nextWidth}px`;
     stage.style.height = `${maxHeight}px`;
     void stage.offsetWidth;
     stage.style.transition = previousTransition;
@@ -126,12 +139,15 @@ export function TextMorph({
 
   useEffect(() => {
     const measure = measureRef.current;
+    const stage = stageRef.current;
+    const host = stage?.parentElement;
     if (!measure) return;
 
     const observer = new ResizeObserver(() => {
       if (!morphingRef.current) measureStage();
     });
     observer.observe(measure);
+    if (host) observer.observe(host);
     return () => observer.disconnect();
   }, [measureStage]);
 
@@ -275,19 +291,19 @@ export function TextMorph({
       >
         <span
           ref={measureRef}
-          className="invisible absolute start-0 top-0 block w-max whitespace-pre"
+          className="invisible absolute start-0 top-0 block whitespace-normal"
           aria-hidden="true"
         />
         <span
           ref={currentLayerRef}
-          className="absolute start-0 top-0 block w-max whitespace-pre"
+          className="absolute start-0 top-0 block w-full whitespace-normal"
           style={{ transformOrigin: "inline-start center" }}
         >
           {currentWord}
         </span>
         <span
           ref={nextLayerRef}
-          className="absolute start-0 top-0 block w-max whitespace-pre opacity-0"
+          className="absolute start-0 top-0 block w-full whitespace-normal opacity-0"
           style={{
             filter: `blur(${MORPH_BLUR}px)`,
             transform: "scale(0.992)",

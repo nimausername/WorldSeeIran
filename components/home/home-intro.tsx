@@ -28,7 +28,7 @@ export const HomeIntro = ({ dict }: HomeIntroProps) => {
   if (!showContent) {
     return (
       <section
-        className="flex h-full flex-col justify-center px-4 py-16 sm:px-6"
+        className="flex h-full flex-col justify-center px-4 py-16 pb-[max(6.5rem,calc(env(safe-area-inset-bottom)+5.5rem))] sm:px-6 sm:pb-24"
         aria-labelledby="home-brand"
       >
         <div className="mx-auto flex w-full max-w-2xl flex-col items-start gap-6">
@@ -43,7 +43,7 @@ export const HomeIntro = ({ dict }: HomeIntroProps) => {
               words={[...dict.hero.headlineWords]}
               interval={2400}
               morphDuration={680}
-              className="text-4xl font-bold tracking-tight md:text-5xl"
+              className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
             />
             <span className="sr-only">{dict.hero.headline}</span>
           </h1>
@@ -53,6 +53,7 @@ export const HomeIntro = ({ dict }: HomeIntroProps) => {
           <Button
             type="button"
             size="lg"
+            className="min-h-11 touch-manipulation px-4 text-sm"
             onClick={handleOpenContent}
             aria-label={dict.hero.scrollHint}
           >
@@ -65,7 +66,7 @@ export const HomeIntro = ({ dict }: HomeIntroProps) => {
 
   return (
     <section
-      className="mx-auto flex h-full min-h-0 w-full max-w-2xl flex-col px-4 py-8 pb-24 sm:px-6 sm:py-10"
+      className="mx-auto flex h-full min-h-0 w-full max-w-2xl flex-col px-4 py-8 pb-[max(6.5rem,calc(env(safe-area-inset-bottom)+5.5rem))] pt-[max(2rem,env(safe-area-inset-top))] sm:px-6 sm:py-10 sm:pb-24"
       aria-labelledby="content-title"
     >
       <div className="shrink-0 space-y-4">

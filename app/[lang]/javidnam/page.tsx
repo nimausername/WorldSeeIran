@@ -3,8 +3,14 @@ import { notFound } from "next/navigation"
 
 import { JavidnamFieldLoader } from "@/components/fallen/javidnam-field-loader"
 import { brandOpenGraphImage, brandTwitter } from "@/lib/branding"
+import { FALLEN_PEOPLE_META } from "@/lib/fallen/people"
 import { isLocale, locales, type Locale } from "@/lib/i18n/config"
 import { getDictionary } from "@/lib/i18n/dictionaries"
+import {
+  formatLocaleDate,
+  formatLocaleNumber,
+  formatTemplate,
+} from "@/lib/i18n/format"
 
 type JavidnamPageProps = {
   readonly params: Promise<{
@@ -73,11 +79,19 @@ export default async function JavidnamPage({ params }: JavidnamPageProps) {
   }
 
   const dict = getDictionary(lang)
+  const peopleCountLabel = formatTemplate(dict.javidnam.stats.peopleCount, {
+    count: formatLocaleNumber(lang, FALLEN_PEOPLE_META.count),
+  })
+  const lastUpdatedLabel = formatTemplate(dict.javidnam.stats.lastUpdated, {
+    date: formatLocaleDate(lang, FALLEN_PEOPLE_META.fetchedAt),
+  })
 
   return (
     <JavidnamFieldLoader
       label={dict.javidnam.title}
       lead={dict.javidnam.lead}
+      peopleCountLabel={peopleCountLabel}
+      lastUpdatedLabel={lastUpdatedLabel}
       detailCopy={dict.javidnam.detail}
     />
   )

@@ -15,8 +15,39 @@ type JavidnamFieldProps = {
   readonly label: string
   /** Short supporting line shown over the field. */
   readonly lead: string
+  /** Localized memorial headcount line. */
+  readonly peopleCountLabel: string
+  /** Localized last-updated line. */
+  readonly lastUpdatedLabel: string
   /** Localized labels for the detail panel. */
   readonly detailCopy: JavidnamDetailCopy
+}
+
+type FieldLayout = {
+  readonly imageWidth: number
+  readonly imageHeight: number
+  readonly gap: number
+  readonly maxSpeed: number
+  readonly idleSpeed: number
+  readonly maxConcurrentLoads: number
+}
+
+const DESKTOP_LAYOUT: FieldLayout = {
+  imageWidth: 148,
+  imageHeight: 186,
+  gap: 16,
+  maxSpeed: 4.2,
+  idleSpeed: 0.24,
+  maxConcurrentLoads: 6,
+}
+
+const MOBILE_LAYOUT: FieldLayout = {
+  imageWidth: 110,
+  imageHeight: 138,
+  gap: 12,
+  maxSpeed: 2.4,
+  idleSpeed: 0.16,
+  maxConcurrentLoads: 4,
 }
 
 type PortraitMetaModule = typeof import("@/lib/fallen/portrait-meta")
@@ -31,16 +62,40 @@ const loadPortraitMeta = (): Promise<PortraitMetaModule> => {
 }
 
 /**
+ * Picks denser, slower field metrics on narrow or coarse-pointer viewports.
+ */
+const useFieldLayout = (): FieldLayout => {
+  const [layout, setLayout] = useState<FieldLayout>(DESKTOP_LAYOUT)
+
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 640px), (pointer: coarse)")
+    const update = () => {
+      setLayout(query.matches ? MOBILE_LAYOUT : DESKTOP_LAYOUT)
+    }
+    update()
+    query.addEventListener("change", update)
+    return () => {
+      query.removeEventListener("change", update)
+    }
+  }, [])
+
+  return layout
+}
+
+/**
  * Full-screen memorial portrait field backed by the pooled infinite canvas.
  * Ships compact image ids first; person meta is deferred until idle / click.
  */
 export const JavidnamField = ({
   label,
   lead,
+  peopleCountLabel,
+  lastUpdatedLabel,
   detailCopy,
 }: JavidnamFieldProps) => {
   const [selected, setSelected] = useState<FallenPortrait | null>(null)
   const clickInFlightRef = useRef(false)
+  const layout = useFieldLayout()
 
   useEffect(() => {
     const prefetch = () => {
@@ -87,33 +142,41 @@ export const JavidnamField = ({
   }
 
   return (
-    <section className="relative h-full w-full bg-black" aria-label={label}>
-      <h1 className="sr-only">{label}</h1>
-      <p className="sr-only">{lead}</p>
-
+    <section className="relative h-full w-full bg-background" aria-label={label}>
       <InfiniteImageField
         images={FALLEN_PORTRAIT_IMAGES}
         className="absolute inset-0"
-        imageWidth={148}
-        imageHeight={186}
-        gap={16}
-        maxSpeed={4.2}
-        idleSpeed={0.24}
+        imageWidth={layout.imageWidth}
+        imageHeight={layout.imageHeight}
+        gap={layout.gap}
+        maxSpeed={layout.maxSpeed}
+        idleSpeed={layout.idleSpeed}
         cacheSize={96}
-        maxConcurrentLoads={6}
+        maxConcurrentLoads={layout.maxConcurrentLoads}
         borderRadius={0}
         paused={selected !== null}
         onImageClick={handleImageClick}
       />
 
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 bg-gradient-to-b from-black/55 via-black/15 to-transparent px-4 pt-6 pb-16 sm:px-6">
-        <p className="text-sm font-medium tracking-wide text-white/80">
-          {label}
-        </p>
-        <p className="mt-1 max-w-xl text-xs leading-relaxed text-white/55 sm:text-sm">
-          {lead}
-        </p>
-      </div>
+      <header className="pointer-events-none absolute inset-x-0 top-0 z-10 bg-gradient-to-b from-background/90 via-background/45 to-transparent px-4 pt-[max(1.25rem,env(safe-area-inset-top))] pb-24 sm:px-8 sm:pb-28 sm:pt-[max(1.75rem,env(safe-area-inset-top))]">
+        <div className="max-w-2xl">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+            {label}
+          </h1>
+          <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+            {lead}
+          </p>
+          <p className="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-sm text-muted-foreground">
+            <span className="font-medium tabular-nums text-foreground/90">
+              {peopleCountLabel}
+            </span>
+            <span className="hidden text-border sm:inline" aria-hidden="true">
+              ·
+            </span>
+            <span className="tabular-nums">{lastUpdatedLabel}</span>
+          </p>
+        </div>
+      </header>
 
       <JavidnamDetail
         person={selected}

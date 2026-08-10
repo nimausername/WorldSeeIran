@@ -23,12 +23,18 @@ import {
 type LanguageSwitcherProps = {
   readonly locale: Locale
   readonly label: string
+  /** Smaller icon when the dock is in compact mobile mode. */
+  readonly compact?: boolean
 }
 
 /**
  * Dock language menu using shadcn DropdownMenu radio items.
  */
-export const LanguageSwitcher = ({ locale, label }: LanguageSwitcherProps) => {
+export const LanguageSwitcher = ({
+  locale,
+  label,
+  compact = false,
+}: LanguageSwitcherProps) => {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -61,7 +67,10 @@ export const LanguageSwitcher = ({ locale, label }: LanguageSwitcherProps) => {
           aria-label={label}
           className="flex size-full items-center justify-center rounded-full text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
-          <LanguagesIcon className="size-4" aria-hidden="true" />
+          <LanguagesIcon
+            className={compact ? "size-3.5" : "size-4"}
+            aria-hidden="true"
+          />
           <span className="sr-only">
             {label}: {localeNames[locale]}
           </span>
@@ -84,7 +93,7 @@ export const LanguageSwitcher = ({ locale, label }: LanguageSwitcherProps) => {
               key={item}
               value={item}
               lang={item}
-              className="gap-3"
+              className="min-h-11 gap-3 touch-manipulation"
             >
               <span className="font-medium tabular-nums text-muted-foreground">
                 {localeLabels[item]}

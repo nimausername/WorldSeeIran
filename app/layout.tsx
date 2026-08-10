@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Geist, Geist_Mono, Vazirmatn } from "next/font/google"
 
 import { ThemeProvider } from "@/components/theme-provider"
@@ -33,6 +33,16 @@ export const metadata: Metadata = {
     type: "website",
   },
   twitter: brandTwitter,
+}
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#252525" },
+  ],
 }
 
 /**

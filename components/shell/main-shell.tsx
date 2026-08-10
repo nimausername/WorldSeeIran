@@ -10,6 +10,9 @@ type MainShellProps = {
   readonly homeLabel: string
   readonly languageLabel: string
   readonly javidnamLabel: string
+  readonly themeToLightLabel: string
+  readonly themeToDarkLabel: string
+  readonly creditLabel: string
   readonly children: ReactNode
 }
 
@@ -21,18 +24,26 @@ export const MainShell = ({
   homeLabel,
   languageLabel,
   javidnamLabel,
+  themeToLightLabel,
+  themeToDarkLabel,
+  creditLabel,
   children,
 }: MainShellProps) => {
   return (
     <div className="relative h-dvh w-full overflow-hidden bg-background">
       <NamesBackground />
       <div className="relative z-10 h-full min-h-0">{children}</div>
+      <p className="pointer-events-none absolute bottom-[max(1rem,env(safe-area-inset-bottom))] start-[max(1rem,env(safe-area-inset-left))] z-20 max-w-[min(12rem,40vw)] text-xs tracking-wide text-muted-foreground/70 rtl:start-[max(1rem,env(safe-area-inset-right))]">
+        {creditLabel}
+      </p>
       <Suspense fallback={null}>
         <NavigationDock
           locale={locale}
           homeLabel={homeLabel}
           languageLabel={languageLabel}
           javidnamLabel={javidnamLabel}
+          themeToLightLabel={themeToLightLabel}
+          themeToDarkLabel={themeToDarkLabel}
         />
       </Suspense>
     </div>

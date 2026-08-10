@@ -3,8 +3,13 @@
 import { HomeIcon, UsersIcon } from "lucide-react"
 import Link from "next/link"
 import { usePathname, useSearchParams } from "next/navigation"
+import { useEffect, useState } from "react"
 
 import { Dock, DockItem, DockSeparator } from "@/components/motion/dock"
+import {
+  THEME_TOGGLE_CIRCLE,
+  ThemeToggle,
+} from "@/components/motion/theme-toggle"
 import { LanguageSwitcher } from "@/components/shell/language-switcher"
 import type { Locale } from "@/lib/i18n/config"
 
@@ -13,27 +18,64 @@ type NavigationDockProps = {
   readonly homeLabel: string
   readonly languageLabel: string
   readonly javidnamLabel: string
+  readonly themeToLightLabel: string
+  readonly themeToDarkLabel: string
+}
+
+const MOBILE_DOCK_SIZE = 34
+const DESKTOP_DOCK_SIZE = 36
+
+/**
+ * Uses a compact dock on narrow viewports, full size on larger screens.
+ */
+const useDockSize = () => {
+  const [size, setSize] = useState(MOBILE_DOCK_SIZE)
+
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 640px)")
+    const update = () => {
+      setSize(query.matches ? MOBILE_DOCK_SIZE : DESKTOP_DOCK_SIZE)
+    }
+    update()
+    query.addEventListener("change", update)
+    return () => {
+      query.removeEventListener("change", update)
+    }
+  }, [])
+
+  return size
 }
 
 /**
- * Site menu dock: home, javidnam, and language menu.
+ * Site menu dock: home, javidnam, theme, and language menu.
  */
 export const NavigationDock = ({
   locale,
   homeLabel,
   languageLabel,
   javidnamLabel,
+  themeToLightLabel,
+  themeToDarkLabel,
 }: NavigationDockProps) => {
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const dockSize = useDockSize()
+  const isCompact = dockSize <= MOBILE_DOCK_SIZE
   const view = searchParams.get("view")
   const isHomeRoute =
     pathname === `/${locale}` || pathname === `/${locale}/`
   const isJavidnamRoute = pathname === `/${locale}/javidnam`
+  const iconClassName = isCompact ? "size-3.5" : "size-4"
 
   return (
-    <nav className="absolute right-4 bottom-4 z-20" aria-label={homeLabel}>
-      <Dock size={36} className="gap-1 rounded-xl px-1.5 py-0.5 shadow-lg">
+    <nav
+      className="absolute end-[max(1rem,env(safe-area-inset-right))] bottom-[max(1rem,env(safe-area-inset-bottom))] z-20 rtl:end-[max(1rem,env(safe-area-inset-left))]"
+      aria-label={homeLabel}
+    >
+      <Dock
+        size={dockSize}
+        className="gap-0.5 rounded-lg px-1 py-0.5 shadow-lg"
+      >
         <DockItem active={isHomeRoute && view !== "content"}>
           <Link
             href={`/${locale}`}
@@ -41,7 +83,7 @@ export const NavigationDock = ({
             tabIndex={0}
             className="flex size-full items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
-            <HomeIcon className="size-4" aria-hidden="true" />
+            <HomeIcon className={iconClassName} aria-hidden="true" />
           </Link>
         </DockItem>
 
@@ -52,13 +94,27 @@ export const NavigationDock = ({
             tabIndex={0}
             className="flex size-full items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
-            <UsersIcon className="size-4" aria-hidden="true" />
+            <UsersIcon className={iconClassName} aria-hidden="true" />
           </Link>
         </DockItem>
 
-        <DockSeparator className="h-4" />
+        <DockSeparator className={isCompact ? "h-4" : "h-5"} />
 
-        <LanguageSwitcher locale={locale} label={languageLabel} />
+        <DockItem>
+          <ThemeToggle
+            {...THEME_TOGGLE_CIRCLE}
+            lightLabel={themeToLightLabel}
+            darkLabel={themeToDarkLabel}
+            iconClassName={iconClassName}
+            className="size-full rounded-full text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          />
+        </DockItem>
+
+        <LanguageSwitcher
+          locale={locale}
+          label={languageLabel}
+          compact={isCompact}
+        />
       </Dock>
     </nav>
   )
