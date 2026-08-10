@@ -16,7 +16,7 @@ WorldSeeIran is not another feed of noise. It is a place to:
 
 - **Remember the fallen** — names, faces, and fragments of life that families and journalists have been able to document
 - **Refuse erasure** — so victims are not reduced to anonymous numbers or rewritten by the regime
-- **Confront responsibility** — documentation of oppressors is part of the long-term vision (in progress)
+- **Confront responsibility** — a public record of documented oppressors in the chain of command and the machinery of killing
 
 An earlier version of this project grew too complex. This rebuild keeps the purpose clear again.
 
@@ -27,6 +27,7 @@ An earlier version of this project grew too complex. This rebuild keeps the purp
 | **Localized site shell** | Routes under `/en`, `/de`, and `/fa` (RTL for Persian), with Accept-Language redirects |
 | **Home** | Brand-led memorial introduction and explanatory sections |
 | **Javidnam field** | Full-viewport infinite canvas of Iran International / javidnaman portraits; click a face for name, age, place, and date when known |
+| **Oppressors directory** | Searchable record of documented individuals (roles, responsibility, sources, portraits) |
 | **Compact data** | Slim JSON indexes for thousands of portraits; person meta is loaded on demand |
 | **Object storage ready** | Portrait images can be served from self-hosted Garage (S3-compatible) via `NEXT_PUBLIC_FALLEN_ASSET_BASE` |
 
@@ -71,38 +72,50 @@ Open [http://localhost:3000](http://localhost:3000). You will be redirected to a
 Copy `.env.example` to `.env.local`:
 
 ```bash
-# Public origin for javidnam portrait files (no trailing slash).
-# Leave unset to load from this app's public/fallen/iranintl/ folder.
+# Public origin for javidnam + oppressor portrait files (no trailing slash).
+# Leave unset to load from this app's public/fallen/iranintl/ and public/oppressors/ folders.
 NEXT_PUBLIC_FALLEN_ASSET_BASE=https://webgarage.worldseeiran.org
 ```
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `NEXT_PUBLIC_FALLEN_ASSET_BASE` | No | HTTPS origin that serves `/iranintl/{id}.jpg` (or `.png`). Used by the canvas with `crossOrigin="anonymous"`, so the origin **must** send CORS headers (`Access-Control-Allow-Origin`). |
+| `NEXT_PUBLIC_FALLEN_ASSET_BASE` | No | HTTPS origin that serves `/iranintl/{id}.jpg` (or `.png`) and `/oppressors/{file}`. Javidnam canvas uses `crossOrigin="anonymous"`, so the origin **must** send CORS headers (`Access-Control-Allow-Origin`). |
 
 Portrait object layout on the CDN / Garage website bucket:
 
 ```text
 {NEXT_PUBLIC_FALLEN_ASSET_BASE}/iranintl/{id}.jpg
 {NEXT_PUBLIC_FALLEN_ASSET_BASE}/iranintl/{id}.png
+{NEXT_PUBLIC_FALLEN_ASSET_BASE}/oppressors/{slug}.{jpg|jpeg|webp}
 ```
 
-Heavy image binaries are **not** committed to git (see `.gitignore`). For local development without Garage, place files under `public/fallen/iranintl/` and leave the env var empty.
+Heavy image binaries are **not** committed to git (see `.gitignore`). For local development without Garage, place files under `public/fallen/iranintl/` and `public/oppressors/`, and leave the env var empty.
+
+To sync local oppressor portraits to Garage once you have write keys:
+
+```bash
+export AWS_ACCESS_KEY_ID=...
+export AWS_SECRET_ACCESS_KEY=...
+./scripts/sync-oppressors-garage.sh
+```
 
 ## Project structure
 
 ```text
-app/[lang]/          Locale-scoped pages (home, javidnam)
+app/[lang]/          Locale-scoped pages (home, javidnam, oppressors)
 components/
   fallen/            Memorial field + detail dialog
+  oppressors/        Accountability directory + detail dialog
   home/              Home intro / content flow
   shell/             Navigation dock, language switcher
   ui/                Shared UI primitives (shadcn-style)
-data/                Compact portrait indexes and meta JSON
+data/                Compact portrait indexes, meta JSON, oppressors.json
 lib/
   fallen/            Portrait loaders, types, helpers
+  oppressors/        Oppressor loaders, types, image URLs
   i18n/              Locales + dictionaries (en, de, fa)
 public/fallen/       Manifest only in git; images local / Garage
+public/oppressors/   Local portraits (gitignored binaries); Garage sync via scripts/
 proxy.ts             Locale redirect middleware entry
 ```
 
@@ -120,6 +133,7 @@ Copy lives in `lib/i18n/dictionaries.ts`.
 
 - Compact image index: `data/fallen-portrait-images.json`
 - Deferred person meta: `data/fallen-portrait-meta.json`
+- Oppressors directory: `data/oppressors.json` (migrated from the previous published records)
 - Additional source / working data may live under `data/` (for example Iran International javidnaman exports)
 
 Memorial records are incomplete by nature. Entries may contain gaps (unknown age, place, or date). Corrections and verified additions from families, journalists, and human-rights researchers are welcome when they improve accuracy and dignity.

@@ -10,6 +10,7 @@ type MainShellProps = {
   readonly homeLabel: string
   readonly languageLabel: string
   readonly javidnamLabel: string
+  readonly oppressorsLabel: string
   readonly themeToLightLabel: string
   readonly themeToDarkLabel: string
   readonly creditLabel: string
@@ -24,6 +25,7 @@ export const MainShell = ({
   homeLabel,
   languageLabel,
   javidnamLabel,
+  oppressorsLabel,
   themeToLightLabel,
   themeToDarkLabel,
   creditLabel,
@@ -42,6 +44,7 @@ export const MainShell = ({
           homeLabel={homeLabel}
           languageLabel={languageLabel}
           javidnamLabel={javidnamLabel}
+          oppressorsLabel={oppressorsLabel}
           themeToLightLabel={themeToLightLabel}
           themeToDarkLabel={themeToDarkLabel}
         />

@@ -48,3 +48,11 @@ next-env.d.ts
 /public/fallen/**/*.webp
 /public/fallen/**/*.gif
 /public/fallen/**/*.avif
+
+# Oppressor portraits (local / Garage only)
+/public/oppressors/**/*.jpg
+/public/oppressors/**/*.jpeg
+/public/oppressors/**/*.png
+/public/oppressors/**/*.webp
+/public/oppressors/**/*.gif
+/public/oppressors/**/*.avif

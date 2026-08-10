@@ -44,6 +44,7 @@ export default async function LangLayout({ children, params }: LangLayoutProps) 
         homeLabel={dict.nav.home}
         languageLabel={dict.nav.language}
         javidnamLabel={dict.nav.javidnam}
+        oppressorsLabel={dict.nav.oppressors}
         themeToLightLabel={dict.nav.themeToLight}
         themeToDarkLabel={dict.nav.themeToDark}
         creditLabel={dict.credit}

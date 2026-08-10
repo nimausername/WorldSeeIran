@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
@@ -20,6 +21,7 @@ export const HomeIntro = ({ dict }: HomeIntroProps) => {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const showContent = searchParams.get("view") === "content"
+  const locale = pathname.split("/").filter(Boolean)[0] ?? "en"
 
   const handleOpenContent = () => {
     router.push(`${pathname}?view=content`)
@@ -148,7 +150,14 @@ export const HomeIntro = ({ dict }: HomeIntroProps) => {
             <div className="grid gap-6 sm:grid-cols-2">
               <div className="space-y-2">
                 <h3 className="text-sm font-medium">
-                  {dict.whatYouWillFind.fallen.title}
+                  <Link
+                    href={`/${locale}/javidnam`}
+                    className="underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+                    tabIndex={0}
+                    aria-label={dict.whatYouWillFind.fallen.title}
+                  >
+                    {dict.whatYouWillFind.fallen.title}
+                  </Link>
                 </h3>
                 <p className="text-sm leading-relaxed text-muted-foreground">
                   {dict.whatYouWillFind.fallen.body}
@@ -156,7 +165,14 @@ export const HomeIntro = ({ dict }: HomeIntroProps) => {
               </div>
               <div className="space-y-2">
                 <h3 className="text-sm font-medium">
-                  {dict.whatYouWillFind.oppressors.title}
+                  <Link
+                    href={`/${locale}/oppressors`}
+                    className="underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+                    tabIndex={0}
+                    aria-label={dict.whatYouWillFind.oppressors.title}
+                  >
+                    {dict.whatYouWillFind.oppressors.title}
+                  </Link>
                 </h3>
                 <p className="text-sm leading-relaxed text-muted-foreground">
                   {dict.whatYouWillFind.oppressors.body}

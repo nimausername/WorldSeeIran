@@ -67,4 +67,9 @@ export const sitemapRoutes = [
     changeFrequency: "daily" as const,
     priority: 0.9,
   },
+  {
+    path: "oppressors",
+    changeFrequency: "weekly" as const,
+    priority: 0.85,
+  },
 ] as const

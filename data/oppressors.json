@@ -1,0 +1,378 @@
+{
+  "meta": {
+    "updatedAt": "2026-08-10T16:30:00.000Z",
+    "count": 11,
+    "source": "Migrated WorldSeeIran backup records plus individuals named in U.S. Treasury (OFAC) and UK FCDO sanctions for the 2025–2026 protest crackdown."
+  },
+  "people": [
+    {
+      "id": "ali-khamenei",
+      "name": {
+        "en": "Ali Khamenei",
+        "de": "Ali Chamenei",
+        "fa": "علی خامنه‌ای"
+      },
+      "role": {
+        "en": "Supreme Leader of Iran",
+        "de": "Oberster Führer Irans",
+        "fa": "رهبر جمهوری اسلامی ایران"
+      },
+      "summary": {
+        "en": "As Supreme Leader since 1989, Khamenei commands the armed forces and security apparatus. Public reporting on the 2025–2026 uprising links the massacre of protesters — including live fire by IRGC and Basij forces — to orders issued under his authority.",
+        "de": "Als Oberster Führer seit 1989 befehligt Chamenei die Streitkräfte und den Sicherheitsapparat. Berichte zum Aufstand 2025–2026 verbinden das Massaker an Demonstranten — einschließlich Schüssen durch IRGC und Basidsch — mit Befehlen unter seiner Autorität.",
+        "fa": "از ۱۳۶۸ به‌عنوان رهبر، فرماندهی نیروهای مسلح و دستگاه امنیتی در اختیار اوست. گزارش‌های عمومی از خیزش ۱۴۰۴–۱۴۰۵ کشتار معترضان — از جمله شلیک مستقیم نیروهای سپاه و بسیج — را به دستورات تحت اقتدار او پیوند می‌زنند."
+      },
+      "category": "command",
+      "tags": [
+        "massacre",
+        "enabling"
+      ],
+      "imageFile": "ali-khamenei.jpg",
+      "sources": [
+        {
+          "label": "BBC",
+          "url": "https://www.bbc.com/news/articles/ckglee733wno"
+        },
+        {
+          "label": "The National",
+          "url": "https://www.thenationalnews.com/news/mena/2026/01/18/irans-khamenei-acknowledges-thousands-killed-in-protests-and-blames-us/"
+        },
+        {
+          "label": "Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Ali_Khamenei"
+        }
+      ]
+    },
+    {
+      "id": "ali-larijani",
+      "name": {
+        "en": "Ali Larijani",
+        "de": "Ali Laridschani",
+        "fa": "علی لاریجانی"
+      },
+      "role": {
+        "en": "Secretary of the Supreme National Security Council",
+        "de": "Sekretär des Obersten Nationalen Sicherheitsrats",
+        "fa": "دبیر شورای عالی امنیت ملی"
+      },
+      "summary": {
+        "en": "Former parliament speaker and IRGC officer; as SNSC secretary he coordinates national security and repression policy. U.S. Treasury sanctions (15 Jan 2026) identify him as a central coordinator of the crackdown who publicly called for force against protesters.",
+        "de": "Ehemaliger Parlamentspräsident und IRGC-Offizier; als SNSC-Sekretär koordiniert er Sicherheits- und Repressionspolitik. US-Sanktionen (15. Jan. 2026) nennen ihn als zentralen Koordinator der Niederschlagung, der öffentlich Gewalt gegen Demonstranten forderte.",
+        "fa": "رئیس پیشین مجلس و افسر سابق سپاه؛ به‌عنوان دبیر شورای عالی امنیت ملی، سیاست امنیتی و سرکوب را هماهنگ می‌کند. تحریم‌های خزانه‌داری آمریکا (۱۵ ژانویه ۲۰۲۶) او را هماهنگ‌کنندهٔ مرکزی سرکوب می‌دانند که علناً خواستار به‌کارگیری زور علیه معترضان شد."
+      },
+      "category": "command",
+      "tags": [
+        "massacre",
+        "enabling"
+      ],
+      "imageFile": "ali-larijani.jpg",
+      "sources": [
+        {
+          "label": "U.S. Treasury",
+          "url": "https://home.treasury.gov/news/press-releases/sb0364"
+        },
+        {
+          "label": "OFAC",
+          "url": "https://ofac.treasury.gov/recent-actions/20260115"
+        }
+      ]
+    },
+    {
+      "id": "eskandar-momeni",
+      "name": {
+        "en": "Eskandar Momeni",
+        "de": "Eskandar Momeni",
+        "fa": "اسکندر مؤمنی"
+      },
+      "role": {
+        "en": "Minister of the Interior",
+        "de": "Innenminister",
+        "fa": "وزیر کشور"
+      },
+      "summary": {
+        "en": "Interior Minister with authority over Iran’s police. The UK sanctioned him (2 Feb 2026) for serious human rights violations linked to security-force violence against protesters in 2025–2026.",
+        "de": "Innenminister mit Aufsicht über Irans Polizei. Das Vereinigte Königreich sanktionierte ihn (2. Feb. 2026) wegen schwerer Menschenrechtsverletzungen im Zusammenhang mit Gewalt der Sicherheitskräfte gegen Demonstranten 2025–2026.",
+        "fa": "وزیر کشور با مسئولیت بر نیروی انتظامی. بریتانیا او را (۲ فوریه ۲۰۲۶) به‌دلیل نقض جدی حقوق بشر مرتبط با خشونت نیروهای امنیتی علیه معترضان در ۱۴۰۴–۱۴۰۵ تحریم کرد."
+      },
+      "category": "command",
+      "tags": [
+        "massacre",
+        "enabling"
+      ],
+      "imageFile": "eskandar-momeni-v2.jpg",
+      "sources": [
+        {
+          "label": "GOV.UK",
+          "url": "https://www.gov.uk/government/news/uk-announces-sanctions-against-perpetrators-of-human-rights-violations-in-iran"
+        },
+        {
+          "label": "Iran International",
+          "url": "https://www.iranintl.com/en/202602029679"
+        }
+      ]
+    },
+    {
+      "id": "gholamhossein-mohseni-ejei",
+      "name": {
+        "en": "Gholam-Hossein Mohseni-Eje'i",
+        "de": "Gholam-Hossein Mohseni-Edschei",
+        "fa": "غلامحسین محسنی اژه‌ای"
+      },
+      "role": {
+        "en": "Chief Justice (Head of Judiciary)",
+        "de": "Justizchef (Oberster Richter)",
+        "fa": "رئیس قوهٔ قضائیه"
+      },
+      "summary": {
+        "en": "Head of Iran’s judiciary since 2021. Long implicated in torture, executions, and protest crackdowns; after the January 2026 massacre he publicly pushed for rapid death sentences as a deterrent against protesters.",
+        "de": "Justizchef seit 2021. Langjährig mit Folter, Hinrichtungen und Protestunterdrückung in Verbindung gebracht; nach dem Massaker im Januar 2026 drängte er öffentlich auf schnelle Todesurteile als Abschreckung gegen Demonstranten.",
+        "fa": "از ۱۴۰۰ رئیس قوهٔ قضائیه. سال‌ها با شکنجه، اعدام و سرکوب اعتراض‌ها شناخته شده؛ پس از کشتار دی ۱۴۰۴ آشکارا خواهان اجرای سریع احکام اعدام برای بازدارندگی در برابر معترضان شد."
+      },
+      "category": "judiciary",
+      "tags": [
+        "executions",
+        "enabling"
+      ],
+      "imageFile": "gholamhossein-mohseni-ejei.jpg",
+      "sources": [
+        {
+          "label": "Wikipedia (FA)",
+          "url": "https://fa.wikipedia.org/wiki/%D8%BA%D9%84%D8%A7%D9%85%D8%AD%D8%B3%DB%8C%D9%86_%D9%85%D8%AD%D8%B3%D9%86%DB%8C_%D8%A7%DA%98%D9%87%E2%80%8C%D8%A7%DB%8C"
+        }
+      ]
+    },
+    {
+      "id": "ahmad-reza-radan",
+      "name": {
+        "en": "Ahmad-Reza Radan",
+        "de": "Ahmad-Reza Radan",
+        "fa": "احمدرضا رادان"
+      },
+      "role": {
+        "en": "Chief of the national police (FARAJA)",
+        "de": "Chef der nationalen Polizei (FARAJA)",
+        "fa": "فرماندهٔ کل انتظامی (فراجا)"
+      },
+      "summary": {
+        "en": "National police chief since 2023. Human-rights groups document his role in violent protest crackdowns, mass arrests, abuse of detainees, and force against civilians. He is sanctioned by the US and EU. He currently oversees internal security and protest suppression.",
+        "de": "Nationaler Polizeichef seit 2023. Menschenrechtsgruppen dokumentieren seine Rolle bei gewaltsamer Protestunterdrückung, Massenverhaftungen und Gewalt gegen Zivilisten. Von USA und EU sanktioniert. Beaufsichtigt innere Sicherheit und Protestniederschlagung.",
+        "fa": "از ۱۴۰۱ فرماندهٔ کل انتظامی. سازمان‌های حقوق بشر نقش او را در سرکوب خشونت‌آمیز اعتراض‌ها، بازداشت‌های گسترده و خشونت علیه غیرنظامیان مستند کرده‌اند. تحت تحریم آمریکا و اتحادیهٔ اروپاست. اکنون امنیت داخلی و سرکوب اعتراض‌ها را راهبری می‌کند."
+      },
+      "category": "security",
+      "tags": [
+        "massacre",
+        "enabling"
+      ],
+      "imageFile": "ahmad-reza-radan.webp",
+      "sources": [
+        {
+          "label": "Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Ahmad-Reza_Radan"
+        }
+      ]
+    },
+    {
+      "id": "yadollah-buali",
+      "name": {
+        "en": "Yadollah Buali",
+        "de": "Yadollah Buali",
+        "fa": "یدالله بوعلی"
+      },
+      "role": {
+        "en": "IRGC commander, Fars Province",
+        "de": "IRGC-Kommandeur, Provinz Fars",
+        "fa": "فرماندهٔ سپاه استان فارس"
+      },
+      "summary": {
+        "en": "IRGC commander for Fars Province (Shiraz and surrounding areas). U.S. Treasury and UK sanctions (Jan–Feb 2026) hold him responsible for lethal force by IRGC units against protesters during the uprising.",
+        "de": "IRGC-Kommandeur der Provinz Fars (Schiraz und Umgebung). US- und UK-Sanktionen (Jan.–Feb. 2026) machen ihn für tödliche Gewalt von IRGC-Einheiten gegen Demonstranten während des Aufstands verantwortlich.",
+        "fa": "فرماندهٔ سپاه استان فارس (شیراز و اطراف). تحریم‌های آمریکا و بریتانیا (ژانویه–فوریه ۲۰۲۶) او را مسئول خشونت مرگبار یگان‌های سپاه علیه معترضان در خیزش می‌دانند."
+      },
+      "category": "security",
+      "tags": [
+        "massacre"
+      ],
+      "imageFile": "yadollah-buali.jpg",
+      "sources": [
+        {
+          "label": "U.S. Treasury",
+          "url": "https://home.treasury.gov/news/press-releases/sb0364"
+        },
+        {
+          "label": "GOV.UK",
+          "url": "https://www.gov.uk/government/news/uk-announces-sanctions-against-perpetrators-of-human-rights-violations-in-iran"
+        },
+        {
+          "label": "Wikipedia (FA)",
+          "url": "https://fa.wikipedia.org/wiki/%DB%8C%D8%AF%D8%A7%D9%84%D9%84%D9%87_%D8%A8%D9%88%D8%B9%D9%84%DB%8C"
+        }
+      ]
+    },
+    {
+      "id": "azizollah-maleki",
+      "name": {
+        "en": "Azizollah Maleki",
+        "de": "Azizollah Maleki",
+        "fa": "عزیزالله ملکی"
+      },
+      "role": {
+        "en": "LEF / police commander, Fars Province",
+        "de": "LEF-/Polizeikommandeur, Provinz Fars",
+        "fa": "فرماندهٔ انتظامی استان فارس"
+      },
+      "summary": {
+        "en": "Law Enforcement Forces commander for Fars Province. OFAC designated him (15 Jan 2026) for overseeing security forces that killed peaceful demonstrators in Shiraz and the wider province during the crackdown.",
+        "de": "Kommandeur der Ordnungskräfte in der Provinz Fars. OFAC designierte ihn (15. Jan. 2026) wegen Aufsicht über Sicherheitskräfte, die friedliche Demonstranten in Schiraz und der Provinz während der Niederschlagung töteten.",
+        "fa": "فرماندهٔ انتظامی استان فارس. OFAC او را (۱۵ ژانویه ۲۰۲۶) به‌دلیل نظارت بر نیروهایی که در شیراز و استان معترضان مسالمت‌جو را کشتند، تحریم کرد."
+      },
+      "category": "security",
+      "tags": [
+        "massacre"
+      ],
+      "imageFile": "azizollah-maleki.jpg",
+      "sources": [
+        {
+          "label": "U.S. Treasury",
+          "url": "https://home.treasury.gov/news/press-releases/sb0364"
+        },
+        {
+          "label": "OFAC",
+          "url": "https://ofac.treasury.gov/recent-actions/20260115"
+        },
+        {
+          "label": "Wikipedia (FA)",
+          "url": "https://fa.wikipedia.org/wiki/%D8%B9%D8%B2%DB%8C%D8%B2%D8%A7%D9%84%D9%87_%D9%85%D9%84%DA%A9%DB%8C"
+        }
+      ]
+    },
+    {
+      "id": "nematollah-bagheri",
+      "name": {
+        "en": "Nematollah Bagheri",
+        "de": "Nematollah Bagheri",
+        "fa": "نعمت‌الله باقری"
+      },
+      "role": {
+        "en": "IRGC commander, Lorestan Province",
+        "de": "IRGC-Kommandeur, Provinz Lorestan",
+        "fa": "فرماندهٔ سپاه استان لرستان"
+      },
+      "summary": {
+        "en": "IRGC commander for Lorestan Province. U.S. Treasury (15 Jan 2026) cites atrocities by security forces under provincial command, including shootings of civilians in Azna during the uprising.",
+        "de": "IRGC-Kommandeur der Provinz Lorestan. Das US-Finanzministerium (15. Jan. 2026) nennt Gräueltaten der Sicherheitskräfte unter Provinzkommando, darunter Erschießungen von Zivilisten in Azna während des Aufstands.",
+        "fa": "فرماندهٔ سپاه استان لرستان. خزانه‌داری آمریکا (۱۵ ژانویه ۲۰۲۶) از جنایات نیروهای امنیتی تحت فرمان استانی — از جمله تیراندازی به غیرنظامیان در ازنا — در جریان خیزش سخن می‌گوید."
+      },
+      "category": "security",
+      "tags": [
+        "massacre"
+      ],
+      "imageFile": "nematollah-bagheri.jpg",
+      "sources": [
+        {
+          "label": "U.S. Treasury",
+          "url": "https://home.treasury.gov/news/press-releases/sb0364"
+        },
+        {
+          "label": "OFAC",
+          "url": "https://ofac.treasury.gov/recent-actions/20260115"
+        }
+      ]
+    },
+    {
+      "id": "mohammad-reza-hashemifar",
+      "name": {
+        "en": "Mohammad Reza Hashemifar",
+        "de": "Mohammad Reza Hashemifar",
+        "fa": "محمدرضا هاشمی‌فر"
+      },
+      "role": {
+        "en": "LEF / police chief, Lorestan Province",
+        "de": "LEF-/Polizeichef, Provinz Lorestan",
+        "fa": "فرماندهٔ انتظامی استان لرستان"
+      },
+      "summary": {
+        "en": "Police chief in Lorestan Province. Sanctioned by OFAC (15 Jan 2026) and the UK (2 Feb 2026) for police killings of protesters and serious human rights abuses during the 2025–2026 crackdown.",
+        "de": "Polizeichef in der Provinz Lorestan. Von OFAC (15. Jan. 2026) und dem UK (2. Feb. 2026) wegen Polizeitötungen von Demonstranten und schwerer Menschenrechtsverletzungen während der Niederschlagung 2025–2026 sanktioniert.",
+        "fa": "فرماندهٔ انتظامی استان لرستان. توسط OFAC (۱۵ ژانویه ۲۰۲۶) و بریتانیا (۲ فوریه ۲۰۲۶) به‌دلیل کشتن معترضان توسط پلیس و نقض جدی حقوق بشر در سرکوب ۱۴۰۴–۱۴۰۵ تحریم شد."
+      },
+      "category": "security",
+      "tags": [
+        "massacre"
+      ],
+      "imageFile": "mohammad-reza-hashemifar.jpg",
+      "sources": [
+        {
+          "label": "U.S. Treasury",
+          "url": "https://home.treasury.gov/news/press-releases/sb0364"
+        },
+        {
+          "label": "GOV.UK",
+          "url": "https://www.gov.uk/government/news/uk-announces-sanctions-against-perpetrators-of-human-rights-violations-in-iran"
+        }
+      ]
+    },
+    {
+      "id": "seyed-majid-feiz-jafari",
+      "name": {
+        "en": "Seyed Majid Feiz Jafari",
+        "de": "Seyed Majid Feiz Jafari",
+        "fa": "سید مجید فیض جعفری"
+      },
+      "role": {
+        "en": "Public Security Police chief",
+        "de": "Chef der öffentlichen Sicherheitspolizei",
+        "fa": "فرماندهٔ پلیس امنیت عمومی"
+      },
+      "summary": {
+        "en": "Named by the UK (2 Feb 2026) among officials sanctioned for enabling and facilitating brutality against protesters during recent unrest and related human rights abuses.",
+        "de": "Vom UK (2. Feb. 2026) unter den Beamten genannt, die wegen Ermöglichung und Förderung von Brutalität gegen Demonstranten während der jüngsten Unruhen und verwandter Menschenrechtsverletzungen sanktioniert wurden.",
+        "fa": "بریتانیا (۲ فوریه ۲۰۲۶) او را در میان مقاماتی تحریم کرد که در تسهیل و اعمال خشونت علیه معترضان در ناآرامی‌های اخیر و نقض حقوق بشر مرتبط نقش داشته‌اند."
+      },
+      "category": "security",
+      "tags": [
+        "massacre",
+        "enabling"
+      ],
+      "imageFile": "seyed-majid-feiz-jafari.jpg",
+      "sources": [
+        {
+          "label": "GOV.UK",
+          "url": "https://www.gov.uk/government/news/uk-announces-sanctions-against-perpetrators-of-human-rights-violations-in-iran"
+        },
+        {
+          "label": "Iran International",
+          "url": "https://www.iranintl.com/en/202602029679"
+        }
+      ]
+    },
+    {
+      "id": "abolqasem-salavati",
+      "name": {
+        "en": "Abolqasem Salavati",
+        "de": "Abolqasem Salavati",
+        "fa": "ابوالقاسم صلواتی"
+      },
+      "role": {
+        "en": "Judge, Branch 15 of Tehran Revolutionary Court",
+        "de": "Richter, Zweigstelle 15 des Revolutionsgerichts Teheran",
+        "fa": "قاضی شعبهٔ ۱۵ دادگاه انقلاب تهران"
+      },
+      "summary": {
+        "en": "Revolutionary Court judge known for heavy prison terms and death sentences against protesters and political activists. Human-rights reports describe unfair trials, denial of counsel, and coerced confessions. Sanctioned by the EU and US for repression and rights violations. Still issues severe sentences in political and security cases.",
+        "de": "Revolutionsgerichtsrichter, bekannt für schwere Haft- und Todesurteile gegen Demonstranten und Aktivisten. Berichte beschreiben unfaire Verfahren und erzwungene Geständnisse. Von EU und USA sanktioniert. Verhängt weiter schwere Strafen in politischen und Sicherheitsfällen.",
+        "fa": "قاضی دادگاه انقلاب معروف به احکام اعدام و زندان‌های سنگین برای معترضان و فعالان. گزارش‌های حقوق بشری از دادرسی ناعادلانه، محرومیت از وکیل و اعترافات اجباری سخن می‌گویند. به‌دلیل سرکوب و نقض حقوق بشر توسط اتحادیهٔ اروپا و آمریکا تحریم شده و همچنان احکام سنگین در پرونده‌های سیاسی و امنیتی صادر می‌کند."
+      },
+      "category": "judiciary",
+      "tags": [
+        "executions"
+      ],
+      "imageFile": "abolqasem-salavati.jpeg",
+      "sources": [
+        {
+          "label": "Wikipedia (FA)",
+          "url": "https://fa.wikipedia.org/wiki/%D8%A7%D8%A8%D9%88%D8%A7%D9%84%D9%82%D8%A7%D8%B3%D9%85_%D8%B5%D9%84%D9%88%D8%A7%D8%AA%DB%8C"
+        }
+      ]
+    }
+  ]
+}

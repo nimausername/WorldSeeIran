@@ -51,6 +51,8 @@ export const metadata: Metadata = {
     "uprising",
     "Islamic Republic",
     "javidnam",
+    "oppressors",
+    "accountability",
     "protests",
     "human rights",
   ],

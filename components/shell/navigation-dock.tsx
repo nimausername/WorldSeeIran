@@ -1,6 +1,6 @@
 "use client"
 
-import { HomeIcon, UsersIcon } from "lucide-react"
+import { HomeIcon, ScaleIcon, UsersIcon } from "lucide-react"
 import Link from "next/link"
 import { usePathname, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -18,6 +18,7 @@ type NavigationDockProps = {
   readonly homeLabel: string
   readonly languageLabel: string
   readonly javidnamLabel: string
+  readonly oppressorsLabel: string
   readonly themeToLightLabel: string
   readonly themeToDarkLabel: string
 }
@@ -47,13 +48,14 @@ const useDockSize = () => {
 }
 
 /**
- * Site menu dock: home, javidnam, theme, and language menu.
+ * Site menu dock: home, javidnam, oppressors, theme, and language menu.
  */
 export const NavigationDock = ({
   locale,
   homeLabel,
   languageLabel,
   javidnamLabel,
+  oppressorsLabel,
   themeToLightLabel,
   themeToDarkLabel,
 }: NavigationDockProps) => {
@@ -65,6 +67,7 @@ export const NavigationDock = ({
   const isHomeRoute =
     pathname === `/${locale}` || pathname === `/${locale}/`
   const isJavidnamRoute = pathname === `/${locale}/javidnam`
+  const isOppressorsRoute = pathname === `/${locale}/oppressors`
   const iconClassName = isCompact ? "size-3.5" : "size-4"
 
   return (
@@ -95,6 +98,17 @@ export const NavigationDock = ({
             className="flex size-full items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             <UsersIcon className={iconClassName} aria-hidden="true" />
+          </Link>
+        </DockItem>
+
+        <DockItem active={isOppressorsRoute}>
+          <Link
+            href={`/${locale}/oppressors`}
+            aria-label={oppressorsLabel}
+            tabIndex={0}
+            className="flex size-full items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
+            <ScaleIcon className={iconClassName} aria-hidden="true" />
           </Link>
         </DockItem>
 

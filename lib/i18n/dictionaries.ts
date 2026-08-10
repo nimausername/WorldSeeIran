@@ -48,6 +48,7 @@ export type HomeDictionary = {
     readonly home: string
     readonly language: string
     readonly javidnam: string
+    readonly oppressors: string
     readonly themeToLight: string
     readonly themeToDark: string
   }
@@ -72,6 +73,42 @@ export type HomeDictionary = {
       readonly date: string
       readonly unknown: string
     }
+  }
+  readonly oppressors: {
+    readonly meta: {
+      readonly title: string
+      readonly description: string
+    }
+    readonly title: string
+    readonly lead: string
+    readonly stats: {
+      /** Template with `{count}` for the directory headcount. */
+      readonly peopleCount: string
+      /** Template with `{date}` for the last data refresh. */
+      readonly lastUpdated: string
+    }
+    readonly searchPlaceholder: string
+    readonly filters: {
+      readonly all: string
+      readonly command: string
+      readonly security: string
+      readonly judiciary: string
+    }
+    readonly tags: {
+      readonly massacre: string
+      readonly executions: string
+      readonly enabling: string
+    }
+    readonly detail: {
+      readonly close: string
+      readonly role: string
+      readonly category: string
+      readonly responsibility: string
+      readonly sources: string
+      readonly unknown: string
+    }
+    readonly empty: string
+    readonly openProfile: string
   }
 }
 
@@ -133,6 +170,7 @@ const en: HomeDictionary = {
     home: "Home",
     language: "Language",
     javidnam: "Javidnam",
+    oppressors: "Oppressors",
     themeToLight: "Switch to light mode",
     themeToDark: "Switch to dark mode",
   },
@@ -156,6 +194,41 @@ const en: HomeDictionary = {
       date: "Date",
       unknown: "Unknown",
     },
+  },
+  oppressors: {
+    meta: {
+      title: "WorldSeeIran — Oppressors",
+      description:
+        "A record of those who ordered, enabled, and carried out the massacre and executions after the uprising — so the world can see who they are.",
+    },
+    title: "Oppressors",
+    lead: "Names, faces, and documented roles in the chain of command and the machinery of killing.",
+    stats: {
+      peopleCount: "{count} people documented",
+      lastUpdated: "Last updated {date}",
+    },
+    searchPlaceholder: "Search by name or role",
+    filters: {
+      all: "All",
+      command: "Command",
+      security: "Security",
+      judiciary: "Judiciary",
+    },
+    tags: {
+      massacre: "Massacre",
+      executions: "Executions",
+      enabling: "Enabling",
+    },
+    detail: {
+      close: "Close",
+      role: "Role",
+      category: "Category",
+      responsibility: "What they caused",
+      sources: "Sources",
+      unknown: "Unknown",
+    },
+    empty: "No matching records.",
+    openProfile: "Open profile",
   },
 }
 
@@ -217,6 +290,7 @@ const de: HomeDictionary = {
     home: "Startseite",
     language: "Sprache",
     javidnam: "Javidnam",
+    oppressors: "Unterdrücker",
     themeToLight: "Zum Hellmodus wechseln",
     themeToDark: "Zum Dunkelmodus wechseln",
   },
@@ -240,6 +314,41 @@ const de: HomeDictionary = {
       date: "Datum",
       unknown: "Unbekannt",
     },
+  },
+  oppressors: {
+    meta: {
+      title: "WorldSeeIran — Unterdrücker",
+      description:
+        "Ein Verzeichnis derer, die das Massaker und die Hinrichtungen nach dem Aufstand befohlen, ermöglicht und ausgeführt haben — damit die Welt sieht, wer sie sind.",
+    },
+    title: "Unterdrücker",
+    lead: "Namen, Gesichter und dokumentierte Rollen in der Befehlskette und dem Apparat des Tötens.",
+    stats: {
+      peopleCount: "{count} Personen dokumentiert",
+      lastUpdated: "Zuletzt aktualisiert {date}",
+    },
+    searchPlaceholder: "Nach Name oder Rolle suchen",
+    filters: {
+      all: "Alle",
+      command: "Befehl",
+      security: "Sicherheit",
+      judiciary: "Justiz",
+    },
+    tags: {
+      massacre: "Massaker",
+      executions: "Hinrichtungen",
+      enabling: "Ermöglichung",
+    },
+    detail: {
+      close: "Schließen",
+      role: "Rolle",
+      category: "Kategorie",
+      responsibility: "Was sie verursacht haben",
+      sources: "Quellen",
+      unknown: "Unbekannt",
+    },
+    empty: "Keine passenden Einträge.",
+    openProfile: "Profil öffnen",
   },
 }
 
@@ -297,6 +406,7 @@ const fa: HomeDictionary = {
     home: "خانه",
     language: "زبان",
     javidnam: "جاویدنام",
+    oppressors: "ستمگران",
     themeToLight: "حالت روشن",
     themeToDark: "حالت تاریک",
   },
@@ -320,6 +430,41 @@ const fa: HomeDictionary = {
       date: "تاریخ",
       unknown: "نامشخص",
     },
+  },
+  oppressors: {
+    meta: {
+      title: "WorldSeeIran — ستمگران",
+      description:
+        "سندی از کسانی که کشتار و اعدام‌های پس از خیزش را فرمان دادند، ممکن ساختند و اجرا کردند — تا جهان ببیند چه کسانی هستند.",
+    },
+    title: "ستمگران",
+    lead: "نام‌ها، چهره‌ها و نقش‌های مستند در زنجیرهٔ فرمان و دستگاه کشتار.",
+    stats: {
+      peopleCount: "{count} نفر مستند شده",
+      lastUpdated: "آخرین به‌روزرسانی {date}",
+    },
+    searchPlaceholder: "جستجو با نام یا سمت",
+    filters: {
+      all: "همه",
+      command: "فرمان",
+      security: "امنیتی",
+      judiciary: "قضایی",
+    },
+    tags: {
+      massacre: "کشتار",
+      executions: "اعدام",
+      enabling: "تسهیل",
+    },
+    detail: {
+      close: "بستن",
+      role: "سمت",
+      category: "دسته",
+      responsibility: "چه کردند",
+      sources: "منابع",
+      unknown: "نامشخص",
+    },
+    empty: "موردی یافت نشد.",
+    openProfile: "مشاهدهٔ پرونده",
   },
 }
 
